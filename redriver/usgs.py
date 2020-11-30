@@ -9,7 +9,7 @@ soup = BeautifulSoup(source, 'lxml')
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  passwd="", # enter your password
+  passwd="mtn1910", # enter your password
   # create database on mysql and connect  
   database = "redriver" 
 )
@@ -34,25 +34,25 @@ rows = table_body.find_all('tr')
 
 for row in rows:
     cols = row.find_all('td')
-    date_time = cols[0].text.strip()
-    discharge_ft3_per_s = cols[1].text.strip()
-    disolved_oxygen_mg_per_L = cols[2].text.strip()
-    gege_height_feet = cols[3].text.strip()
-    temperature_water_degC = cols[4].text.strip()
-    specific_conductance_unfus_per_cm_at_25degC = cols[5].text.strip()
-    pH_water_unfltr_field_std_units = cols[6].text.strip()
-    turbidity_ir_led_light_det_ang_90_deg = cols[7].text.strip()
+    col_1 = cols[0].text.strip()
+    col_2 = cols[1].text.strip()
+    col_3 = cols[2].text.strip()
+    col_4 = cols[3].text.strip()
+    col_5 = cols[4].text.strip()
+    col_6 = cols[5].text.strip()
+    col_7 = cols[6].text.strip()
+    col_8 = cols[7].text.strip()
     
     # cols = [ele.text.strip() for ele in cols]
     # data.append([ele for ele in cols if ele])
     
     # print column 
-    #print(date_time)
+    #print(col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
    
     # insert crawled data to table
-    # value = (date_time,discharge_ft3_per_s,disolved_oxygen_mg_per_L,gege_height_feet,temperature_water_degC,specific_conductance_unfus_per_cm_at_25degC,pH_water_unfltr_field_std_units,turbidity_ir_led_light_det_ang_90_deg)
-    # sql = "INSERT INTO usgs(date_time,discharge_ft3_per_s,disolved_oxygen_mg_per_L,gege_height_feet,temperature_water_degC,specific_conductance_unfus_per_cm_at_25degC,pH_water_unfltr_field_std_units,turbidity_ir_led_light_det_ang_90_deg) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(date_time,discharge_ft3_per_s,disolved_oxygen_mg_per_L,gege_height_feet,temperature_water_degC,specific_conductance_unfus_per_cm_at_25degC,pH_water_unfltr_field_std_units,turbidity_ir_led_light_det_ang_90_deg)
-    # mycursor.execute(sql)
+    value = (col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
+    sql = ("INSERT INTO usgs(date_time, discharge_ft3_per_s, disolved_oxygen_mg_per_L, gege_height_feet, temperature_water_degC, specific_conductance_unfus_per_cm_at_25degC, pH_water_unfltr_field_std_units, turbidity_ir_led_light_det_ang_90_deg) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')").format(*col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
+    mycursor.execute(sql)
 
     
 
