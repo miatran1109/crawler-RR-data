@@ -7,9 +7,9 @@ soup = BeautifulSoup(source, 'lxml')
 
 # connect to mySQL db
 mydb = mysql.connector.connect(
-  host="localhost",
+  host="127.0.0.1",
   user="root",
-  passwd="mtn1910", # enter your password
+  passwd="", # enter your password
   # create database on mysql and connect  
   database = "redriver" 
 )
@@ -17,11 +17,12 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 # or create database
-# mycursor.execute("CREATE DATABASE redriver")
+#mycursor.execute("CREATE DATABASE redriver")
 
 # create table
 mycursor.execute("DROP TABLE IF EXISTS usgs")
-mycursor.execute("CREATE TABLE usgs(id INT PRIMARY KEY AUTO_INCREMENT ,date_time VARCHAR(100), discharge_ft3_per_s VARCHAR(100), disolved_oxygen_mg_per_L VARCHAR(100),  gege_height_feet VARCHAR(100), temperature_water_degC VARCHAR(100), specific_conductance_unfus_per_cm_at_25degC VARCHAR(100), pH_water_unfltr_field_std_units VARCHAR(100), turbidity_ir_led_light_det_ang_90_deg VARCHAR(100))")
+mycursor.execute("CREATE TABLE usgs(id INT PRIMARY KEY AUTO_INCREMENT, date_time VARCHAR(100), discharge_ft3_per_s VARCHAR(100), disolved_oxygen_mg_per_L VARCHAR(100),  gege_height_feet VARCHAR(100), temperature_water_degC VARCHAR(100), specific_conductance_unfus_per_cm_at_25degC VARCHAR(100), pH_water_unfltr_field_std_units VARCHAR(100), turbidity_ir_led_light_det_ang_90_deg VARCHAR(100))")
+
 # just to check 
 # mycursor.execute("DESCRIBE usgs")
 # for x in mycursor:
@@ -51,8 +52,16 @@ for row in rows:
    
     # insert crawled data to table
     value = (col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
-    sql = ("INSERT INTO usgs(date_time, discharge_ft3_per_s, disolved_oxygen_mg_per_L, gege_height_feet, temperature_water_degC, specific_conductance_unfus_per_cm_at_25degC, pH_water_unfltr_field_std_units, turbidity_ir_led_light_det_ang_90_deg) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')").format(*col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
+    sql = ("""INSERT INTO usgs(
+          date_time, discharge_ft3_per_s, disolved_oxygen_mg_per_L, 
+          gege_height_feet, temperature_water_degC, 
+          specific_conductance_unfus_per_cm_at_25degC, 
+          pH_water_unfltr_field_std_units, turbidity_ir_led_light_det_ang_90_deg) 
+          VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')""").format(col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8)
     mycursor.execute(sql)
+    mydb.commit()
+
+    
 
     
 
